@@ -24,9 +24,10 @@ In United States, Atlanta
 
 SQL Queries:
 
-SELECT a.country, a.city, AVG(p."orderedQuantity") 
+SELECT a.country, a.city, AVG(p."orderedQuantity")  average
 FROM all_sessions a 
 JOIN products p on a."productSKU" = p."SKU" AND p."orderedQuantity" != 0
+	AND country IS NOT NULL AND city IS NOT NULL 
 GROUP BY country, city
 ORDER BY country, city
 
@@ -34,7 +35,7 @@ ORDER BY country, city
 
 Answer:
 
-In Toronto, the average product quantity is 661.5,
+In Toronto, the average product quantity is 662,
 IN Vancouver, the average is 395
 
 
@@ -45,19 +46,19 @@ IN Vancouver, the average is 395
 SQL Queries:
 
 
-SELECT a.country, a.city, "v2ProductCategory", SUM(p."orderedQuantity") 
+SELECT a.country, a.city, "v2ProductCategory" category, SUM(p."orderedQuantity")  total_order
 FROM all_sessions a 
 JOIN products p on a."productSKU" = p."SKU" AND p."orderedQuantity" != 0
+	AND country IS NOT NULL AND city IS NOT NULL
 GROUP BY country, city, "v2ProductCategory"
 ORDER BY country, city, "v2ProductCategory"
 
 
-
 Answer:
-There might be have some patterns. For example, in Canada, every city
-product category is different. In toronto, there are many product categories, 
+There might have some patterns. Youtube is most popular category in worldwide.
+But each city product category is different. In toronto, there are many product categories, 
 most of orders are in drinkware, fun, office categories. But in Vancouver,
-people don't buy too much products, categories only have four.
+people  only buy products in four categories.
 
 
 
@@ -69,12 +70,12 @@ people don't buy too much products, categories only have four.
 SQL Queries1:
 
 WITH cal_total AS
- (SELECT a.country, a.city, "v2ProductCategory" productcategory , 
+ (SELECT a.country, a.city, "v2ProductName" productname , 
  SUM(p."orderedQuantity") total_quantity
  FROM all_sessions a 
  JOIN products p on a."productSKU" = p."SKU" AND p."orderedQuantity" != 0
- GROUP BY country, city, "v2ProductCategory"
- ORDER BY country, city, "v2ProductCategory"
+ GROUP BY country, city, "v2ProductName"
+ ORDER BY country, city, "v2ProductName"
 ) ,
 
 cal_max AS
@@ -85,7 +86,7 @@ cal_max AS
 )
 
 
-SELECT ct.country, ct.city, ct.productcategory, cm.max_orderquantity
+SELECT ct.country, ct.city, ct.productname, cm.max_orderquantity
 FROM cal_total ct
 JOIN cal_max cm ON ct.country=cm.country 
 	AND ct.city = cm.city
@@ -97,12 +98,12 @@ SQL Queries2:
 
 
 WITH cal_total AS
- (SELECT a.country, a.city, "v2ProductCategory" productcategory , 
+ (SELECT a.country, a.city, "v2ProductName" productname , 
  SUM(p."orderedQuantity") total_quantity
  FROM all_sessions a 
  JOIN products p on a."productSKU" = p."SKU" AND p."orderedQuantity" != 0
- GROUP BY country, city, "v2ProductCategory"
- ORDER BY country, city, "v2ProductCategory"
+ GROUP BY country, city, "v2ProductName"
+ ORDER BY country, city, "v2ProductName"
 ) ,
 
 cal_min AS
@@ -113,7 +114,7 @@ cal_min AS
 )
 
 
-SELECT ct.country, ct.city, ct.productcategory, cm.min_orderquantity
+SELECT ct.country, ct.city, ct.productname, cm.min_orderquantity
 FROM cal_total ct
 JOIN cal_min cm ON ct.country=cm.country 
 	AND ct.city = cm.city
@@ -122,15 +123,12 @@ ORDER BY ct.country, cm.city
 
 
 Answer:
-There might be have some patterns. For example, in Canada, every city
-top selling product is different. In toronto, top selling product category
-is office, it might be make sense. In ottawa, the top selling product
-category is men's t-shirt, it is a little be werid, as the summer is not
-hot and long there. But anyway, there is no woman's category in top selling 
-category in Canada. Overall we still can find that YouTube is most popular
-top selling product category in Canada and Worldwide.
-In SQL Querlies 2, we find that T-shirt is minum product order in many cities in Canada .
 
+Top selling product is different in each country and city. In toronto, top selling product 
+is custom decals. In ottawa, the top selling product
+is men's t-shirt, it is a little be werid, as the summer is not
+hot and long there. But anyway, there is no woman's category in top selling 
+category in Canada.
 
 
 
