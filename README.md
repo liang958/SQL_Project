@@ -26,10 +26,11 @@ Set '(not set)', 'not available in demo data' to NULL in the country, city name.
 Based on the reliable data, we research the business insights. For example, 
 1. The United States, Atlanta has the highest level of transaction revenues.
 
-2. The average product quantity In Toronto is 661.5,  The average product quantity
+2. The average product quantity is different in each city and country. For example,
+The average product quantity In Toronto is 661.5,  The average product quantity
 in Vancouver is 395.
 
-3.There might have some patterns. Youtube is most popular category in worldwide.
+3.There might have some patterns. Youtube is most popular product category in worldwide.
 But each city product category is different. In toronto, there are many product categories, 
 most of orders are in drinkware, fun, office categories. But in Vancouver,
 people  only buy products in four categories.

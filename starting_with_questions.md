@@ -35,6 +35,7 @@ ORDER BY country, city
 
 Answer:
 
+the average product quantity is different in each country and city.
 In Toronto, the average product quantity is 662,
 IN Vancouver, the average is 395
 
